@@ -1,0 +1,16 @@
+version: '3.7'
+
+services:
+
+  api:
+    container_name: products-cors-api
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    ports:
+      - 5000:5000
+    volumes:
+      - .\Globomantics.ProductsApi:/home/app
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://0.0.0.0:5000
