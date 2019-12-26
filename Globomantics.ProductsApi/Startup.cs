@@ -33,6 +33,14 @@ namespace Globomantics.ProductsApi
             {
                 options.AddPolicy("GlobomanticsInteral",
                     builder => builder
+                        
+                        // example with sub domain:
+                        // .WithOrigins("https://*.globomanticsshop.com")
+                        // .SetIsOriginAllowedToAllowWildcardSubdomains()
+
+                        // example runtime validation
+                        // .SetIsOriginAllowed(IsOriginAllowed)
+
                         .WithOrigins(allowedOrigins)
                         .WithExposedHeaders("PageNo", "PageSize", "PageCount", "PageTotalRecords")
                     );
@@ -43,6 +51,13 @@ namespace Globomantics.ProductsApi
                         .WithHeaders("Content-Type"));
             });
             services.AddControllers();
+        }
+
+        private static bool IsOriginAllowed(string host)
+        {
+            var corsOriginAllowed = new[] { "globomantics" };
+
+            return corsOriginAllowed.Any(origin => host.Contains(origin));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
