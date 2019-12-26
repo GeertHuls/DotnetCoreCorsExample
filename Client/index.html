@@ -35,11 +35,11 @@
             <div>Product Shop</div>
         </a>
 
-        <form class="form-inline my-2 my-lg-0">
+        <div class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" onclick="loadProducts()">Search</button>
-            <button class="btn btn-outline-success my-2 my-sm-0" onclick="loadProducts(true)">Search Public Api</button>
-        </form>
+            <button class="btn btn-outline-success my-2 my-sm-0" onclick="loadProducts(true)">Search(Include Credentials)</button>
+        </div>
     </nav>
 
 <br>
@@ -48,8 +48,8 @@
 
             <div class="card-body">
                 <h5 class="card-title">No Products Loaded </h5>
-                <a href="#" onclick="loadProducts()" class="btn btn-primary">Load Products</a>
-                <a href="#" onclick="loadProducts(true)" class="btn btn-primary">Load Products Using Public Api</a>
+                <a href="javascript:;" onclick="loadProducts()" class="btn btn-primary">Load Products</a>
+                <a href="javascript:;" onclick="loadProducts(true)" class="btn btn-primary">Load Products(Include Credentials)</a>
             </div>
 
         </div>
@@ -58,10 +58,10 @@
 
 
     <script>
-        async function loadProducts(usePublicApi=false) {
-            let url= usePublicApi?'http://localhost:5000/api/public/PublicProducts':'http://localhost:5000/api/products'
-            const response = await fetch(url, {
-                method: 'GET', // *GET, POST, PUT, DELETE, etc.
+        async function loadProducts(includeCredentials = false) {
+            const response = await fetch('http://localhost:5000/api/products',{
+                method:'GET',
+                credentials: includeCredentials? 'include':'same-origin', // include, same-origin, omit 
             });
             const myJson = await response.json();
             createListWithInnerHTML(myJson)

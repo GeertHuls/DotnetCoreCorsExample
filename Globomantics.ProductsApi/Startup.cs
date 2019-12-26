@@ -32,7 +32,9 @@ namespace Globomantics.ProductsApi
             services.AddCors(options=>
             {
                 options.AddPolicy("GlobomanticsInteral",
-                    builder => builder.WithOrigins(allowedOrigins));
+                    builder => builder
+                        .WithOrigins(allowedOrigins)
+                        .AllowCredentials());
                 options.AddPolicy("PublicApi",
                     builder => builder
                         .AllowAnyOrigin()
