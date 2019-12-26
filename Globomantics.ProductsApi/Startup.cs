@@ -29,11 +29,16 @@ namespace Globomantics.ProductsApi
                 .GetValue<string>("AllowedOrigins")?
                 .Split(",") ?? new string[0];
 
-            services.AddCors(options=> options
-                .AddPolicy("GlobomanticsInteral", builder =>
-                    builder.WithOrigins(allowedOrigins)
-                    )
-                );
+            services.AddCors(options=>
+            {
+                options.AddPolicy("GlobomanticsInteral",
+                    builder => builder.WithOrigins(allowedOrigins));
+                options.AddPolicy("PublicApi",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .WithExposedHeaders("Get")
+                        .WithHeaders("Content-Type"));
+            });
             services.AddControllers();
         }
 
@@ -44,9 +49,10 @@ namespace Globomantics.ProductsApi
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseCors("GlobomanticsInteral");
 
             app.UseRouting();
+
+            app.UseCors("GlobomanticsInteral");
 
             app.UseAuthorization();
 

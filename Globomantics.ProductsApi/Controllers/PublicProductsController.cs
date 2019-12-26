@@ -1,16 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Bogus;
 using Globomantics.ProductsApi.Model;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Globomantics.ProductsApi.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
-    public class ProductsController : ControllerBase
+    // this will override the global GlobomanticsInteral policy
+    [EnableCors("PublicApi")]
+    [Route("api/public/[controller]")]
+    public class PublicProductsController : ControllerBase
     {
-
         [HttpGet]
         public IEnumerable<ProductModel> Get()
         {
