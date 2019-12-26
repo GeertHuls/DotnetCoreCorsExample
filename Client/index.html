@@ -35,11 +35,10 @@
             <div>Product Shop</div>
         </a>
 
-        <div class="form-inline my-2 my-lg-0">
+        <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" onclick="loadProducts()">Search</button>
-            <button class="btn btn-outline-success my-2 my-sm-0" onclick="loadProducts(true)">Search(Include Credentials)</button>
-        </div>
+        </form>
     </nav>
 
 <br>
@@ -48,8 +47,8 @@
 
             <div class="card-body">
                 <h5 class="card-title">No Products Loaded </h5>
-                <a href="javascript:;" onclick="loadProducts()" class="btn btn-primary">Load Products</a>
-                <a href="javascript:;" onclick="loadProducts(true)" class="btn btn-primary">Load Products(Include Credentials)</a>
+                <a href="#" onclick="loadProducts()" class="btn btn-primary">Load Products</a>
+                <a href="#" onclick="loadProducts(true)" class="btn btn-primary">Load Products(Preflight)</a>
             </div>
 
         </div>
@@ -58,10 +57,11 @@
 
 
     <script>
-        async function loadProducts(includeCredentials = false) {
+        async function loadProducts(isPreflight=false) {
             const response = await fetch('http://localhost:5000/api/products',{
-                method:'GET',
-                credentials: includeCredentials? 'include':'same-origin', // include, same-origin, omit 
+                headers:{
+                    'Content-Type': isPreflight? 'application/json':'text/plain'
+                }
             });
             const myJson = await response.json();
             createListWithInnerHTML(myJson)

@@ -34,7 +34,11 @@ namespace Globomantics.ProductsApi
                 options.AddPolicy("GlobomanticsInteral",
                     builder => builder
                         .WithOrigins(allowedOrigins)
-                        .AllowCredentials());
+
+                        .AllowAnyHeader()
+                        .SetPreflightMaxAge(TimeSpan.FromMinutes(1))
+                        
+                        );
                 options.AddPolicy("PublicApi",
                     builder => builder
                         .AllowAnyOrigin()
