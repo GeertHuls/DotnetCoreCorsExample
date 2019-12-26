@@ -34,11 +34,8 @@ namespace Globomantics.ProductsApi
                 options.AddPolicy("GlobomanticsInteral",
                     builder => builder
                         .WithOrigins(allowedOrigins)
-
-                        .AllowAnyHeader()
-                        .SetPreflightMaxAge(TimeSpan.FromMinutes(1))
-                        
-                        );
+                        .WithExposedHeaders("PageNo", "PageSize", "PageCount", "PageTotalRecords")
+                    );
                 options.AddPolicy("PublicApi",
                     builder => builder
                         .AllowAnyOrigin()

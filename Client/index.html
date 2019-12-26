@@ -42,13 +42,16 @@
     </nav>
 
 <br>
+<div id="header-list">
+
+</div>
+<br>
     <div id="product-list" class="card-deck">
         <div class="card text-center" style="margin:20px;">
 
             <div class="card-body">
                 <h5 class="card-title">No Products Loaded </h5>
                 <a href="#" onclick="loadProducts()" class="btn btn-primary">Load Products</a>
-                <a href="#" onclick="loadProducts(true)" class="btn btn-primary">Load Products(Preflight)</a>
             </div>
 
         </div>
@@ -57,14 +60,12 @@
 
 
     <script>
-        async function loadProducts(isPreflight=false) {
-            const response = await fetch('http://localhost:5000/api/products',{
-                headers:{
-                    'Content-Type': isPreflight? 'application/json':'text/plain'
-                }
-            });
+        async function loadProducts() {
+            const response = await fetch('http://localhost:5000/api/products');
             const myJson = await response.json();
             createListWithInnerHTML(myJson)
+            var headers =  Array.from(response.headers.entries()).map(z=> ({name:z[0],value:z[1]}))
+            createHeaderList(headers)
         }
 
         function createListWithInnerHTML(products) {
@@ -82,6 +83,20 @@
             const html = rows.join();
             productList.innerHTML = html
         }
+        
+          
+        function createHeaderList(headers) {
+        
+        const headerList = document.getElementById("header-list");
+
+        const rows = headers.map(header => {
+            return `
+            <span class="font-weight-bold badge badge-pill badge-primary">${header.name} : ${header.value}</span> `;
+        });
+        const html = rows.join();
+        headerList.innerHTML = html
+    }
+  
     </script>
 
 
